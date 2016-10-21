@@ -5,12 +5,10 @@
     "use strict";
     const HttpApplicationServer     = require('./core/server/HttpApplicationServer');
 
-    function configureGlobals() {
+    (() => {
         global.__dirname = __dirname;
         global.pythonScripts = __dirname + '/scripts/python';
-    }
-
-    configureGlobals();
+    })();
 
     let server = new HttpApplicationServer();
     server.configure(8080, 'localhost', 'MLS01');

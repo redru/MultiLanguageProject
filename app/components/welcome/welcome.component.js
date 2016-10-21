@@ -5,7 +5,7 @@
 (function() {
 
     app.component('welcome', {
-        templateUrl: 'js/components/welcome/welcome.component.html',
+        templateUrl: 'components/welcome/welcome.component.html',
         bindings: { $router: '<' },
         controller: WelcomeController
     });

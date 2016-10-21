@@ -5,7 +5,7 @@
 (function() {
 
     app.component('scriptUpload', {
-        templateUrl: 'js/components/scriptupload/script-upload.component.html',
+        templateUrl: 'components/scriptupload/script-upload.component.html',
         bindings: { $router: '<' },
         controller: ScriptUploadController
     });

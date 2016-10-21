@@ -5,7 +5,7 @@
 (function() {
 
     app.component('app', {
-        templateUrl: 'js/components/app/app.component.html',
+        templateUrl: 'components/app/app.component.html',
         $routeConfig: [
             { path: '/welcome', name: 'Welcome', component: 'welcome', useAsDefault: true },
             { path: '/script', name: 'Script', component: 'scriptUpload' }
