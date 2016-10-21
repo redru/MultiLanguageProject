@@ -14,15 +14,9 @@
 
     let server = new HttpApplicationServer();
     server.configure(8080, 'localhost', 'MLS01');
+
+    server.static('/', './app');
+    server.static('/node_modules', './node_modules');
+
     server.start(context => console.log('%s running at http://%s:%s', context.serverName, context.bind, context.port));
-
-    /* Python.configure(global.pythonScripts);
-    Python.start();
-
-    let server = startServer(app, );
-
-    function getTime(req, res) {
-        Python.execute('time', [], data => res.status(200).send(data));
-    } */
-
 })();

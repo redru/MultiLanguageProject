@@ -45,14 +45,41 @@
 
     HttpApplicationServer.prototype.static = function(route, path) {
         this.handler.use(route, express.static(path));
+        console.log('* Directory %s has been mapped as %s', path, route);
     };
 
-    HttpApplicationServer.prototype.map = function() {
+    HttpApplicationServer.prototype.map = function(method, route, callback) {
+        switch(method) {
+            case 'get':
+                this.handler.get(route, callback);
+                break;
+            case 'post':
+                this.handler.post(route, callback);
+                break;
+            case 'put':
+                this.handler.put(route, callback);
+                break;
+            case 'delete':
+                this.handler.delete(route, callback);
+                break;
+            default:
+                console.error('Could not map route %s to method', route, method);
+                return;
+        }
 
+        console.log('* %s %s has been mapped', method, route);
     };
 
-    HttpApplicationServer.prototype.unmap = function() {
+    HttpApplicationServer.prototype.unmap = function(method, route) {
+        let routes = this.handler.routes[method];
 
+        for (let i = 0; i < routes.length; i++) {
+            if (routes[i].path == route) {
+                delete routes[i];
+                console.log('%s %s has been removed from mapping', method, route);
+                return;
+            }
+        }
     };
 
     module.exports = HttpApplicationServer;
