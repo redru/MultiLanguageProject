@@ -1,1 +1,19 @@
-<h2>SCRIPT UPLOAD VIEW</h2>
+<div>
+    <div>
+        <form>
+
+        </form>
+
+        <button data-ng-click="$ctrl.onUploadScript()">Carica</button>
+    </div>
+
+    <div>
+        Result: {{$ctrl.model.scriptResponse.process.data}}<br>
+        Transaction ID: {{$ctrl.model.scriptResponse.transaction.trackId}}<br>
+        Time elapsed: {{$ctrl.model.scriptResponse.process.deltaTime}} ms<br>
+    </div>
+
+    <div>
+        <span> {{$ctrl.model.scriptResponse.message}}</span>
+    </div>
+</div>

@@ -26,6 +26,9 @@
             this.context.serverName = serverName;
 
         this.handler = express();
+        this.handler.use(bodyParser.json());
+        this.handler.use(bodyParser.urlencoded({ extended: false }));
+
         this.server = http.createServer(this.handler);
     };
 
@@ -45,7 +48,12 @@
 
     HttpApplicationServer.prototype.static = function(route, path) {
         this.handler.use(route, express.static(path));
-        console.log('* Directory %s has been mapped as %s', path, route);
+        console.log('[STATIC] Directory %s has been mapped as %s', path, route);
+    };
+
+    HttpApplicationServer.prototype.addRouter = function(route, router) {
+        this.handler.use(route, router);
+        console.log('[ROUTER] Added router to %s', route);
     };
 
     HttpApplicationServer.prototype.map = function(method, route, callback) {
@@ -67,19 +75,7 @@
                 return;
         }
 
-        console.log('* %s %s has been mapped', method, route);
-    };
-
-    HttpApplicationServer.prototype.unmap = function(method, route) {
-        let routes = this.handler.routes[method];
-
-        for (let i = 0; i < routes.length; i++) {
-            if (routes[i].path == route) {
-                delete routes[i];
-                console.log('%s %s has been removed from mapping', method, route);
-                return;
-            }
-        }
+        console.log('[MAPPING] %s %s has been mapped', method, route);
     };
 
     module.exports = HttpApplicationServer;

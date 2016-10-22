@@ -10,8 +10,28 @@
         controller: ScriptUploadController
     });
 
-    function ScriptUploadController() {
-        var $ctrl = this;
+    function ScriptUploadController($scope, $http) {
+        $scope.$ctrl = this;
+        this.$http = $http;
+
+        this.model = {
+            scriptResponse: {}
+        };
     };
+
+    ScriptUploadController.prototype.onUploadScript = function() {
+        var self = this;
+
+        this.$http.get('/api/python?path=time.math.lol.rag.time.py').then(
+            function success(response) {
+                self.model.scriptResponse = response.data;
+            },
+
+            function error() {
+                console.error('Error');
+            });
+    };
+
+    ScriptUploadController.$inject = ['$scope', '$http'];
 
 })();
