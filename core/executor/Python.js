@@ -23,13 +23,12 @@
 
         let fsPath = path.replace(/\.(?=[^.]*\.)/gi, '/'); // Replace all dots
         console.log('[SCRIPT] Python: executing %s', fsPath);
+
         let script = spawn('python', [ this.scriptsPath + '/' + fsPath ].concat(args), { detached: false });
 
         // On data callback (status ok)
         script.stdout.on('data', (data) => {
-            let strData = data.toString('utf8');
-            executionInfo.result = strData;
-            console.log('[SCRIPT] Python process - data: %s', strData);
+            executionInfo.result += data;
         });
 
         // On error callback
@@ -45,7 +44,12 @@
             executionInfo.deltaTime = executionInfo.timeEnd - executionInfo.timeStart;
             executionInfo.code = code;
 
-            console.log('[SCRIPT] Python process - close: process finished with status code %s', code);
+            if (executionInfo.result) {
+                executionInfo.result = executionInfo.result.toString('utf8').replace(/\n$/, '');
+                console.log('[SCRIPT] Python process - result: %s', executionInfo.result);
+            }
+
+            console.log('[SCRIPT] Python process - close: process %s finished with status code %s', fsPath, code);
             return callback(executionInfo.error, executionInfo);
         });
 
@@ -59,7 +63,7 @@
         this.timeStart = 0;
         this.timeEnd = 0;
         this.deltaTime = 0;
-        this.result = null;
+        this.result = '';
     };
 
     function getTimeInMillis() {

@@ -4,21 +4,20 @@
 "use strict";
 (function() {
 
-    //@ ScriptUploadController
-    app.component('scriptUpload', {
-        templateUrl: 'components/scriptupload/script-upload.component.html',
+    //@ ScriptsController
+    app.component('scripts', {
+        templateUrl: 'components/scripts/scripts.component.html',
         bindings: { $router: '<' },
-        controller: ScriptUploadController
+        controller: ScriptsController
     });
 
-    function ScriptUploadController($scope, $http) {
+    function ScriptsController($scope, $http) {
         $scope.$ctrl = this;
         this.$http = $http;
 
         this.model = {
             script: {
-                selected: '',
-                upload: new Script()
+                selected: ''
             }
         };
         this.view = {
@@ -26,10 +25,13 @@
         }
     };
 
-    ScriptUploadController.prototype.onScriptUpload = function() {
+    ScriptsController.prototype.onScriptExecute = function() {
         var self = this;
 
-        this.$http.post('/api/upload', { data: this.model.script.upload }).then(
+        if (this.model.script.selected === '')
+            return;
+
+        this.$http.get('/api/python?path=' + this.model.script.selected).then(
             function success(response) {
                 self.view.scriptResponse = response.data;
             },
@@ -39,6 +41,6 @@
             });
     };
 
-    ScriptUploadController.$inject = ['$scope', '$http'];
+    ScriptsController.$inject = ['$scope', '$http'];
 
 })();

@@ -6,6 +6,6 @@ var app = angular.module('appModule', ['ngComponentRouter']);
 
 (function() {
 
-    app.value('$routerRootComponent', 'app')
+    app.value('$routerRootComponent', 'app');
 
 })();

@@ -7,7 +7,7 @@
     const express       = require('express');
     const bodyParser    = require('body-parser');
 
-    const Context       = require('./Context');
+    const Context       = require('../model/Context');
 
     let HttpApplicationServer = function() {
         this.context = new Context(8080, 'localhost', 'HttpApplicationServer');
@@ -44,6 +44,7 @@
             throw new Error('The middleware is not a function');
 
         this.handler.use(middleware);
+        console.log('[MIDDLEWARE] Added new middleware %s', middleware.name);
     };
 
     HttpApplicationServer.prototype.static = function(route, path) {

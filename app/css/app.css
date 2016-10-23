@@ -1,0 +1,52 @@
+.spacer-05 {
+    padding: 0.5% 0 0.5% 0;
+}
+
+.spacer-1 {
+    padding: 1% 0 1% 0;
+}
+
+.offset-1 {
+    margin-left: 1%;
+}
+
+.offset-2 {
+    margin-left: 1%;
+}
+
+.view-container {
+    clear: both;
+    margin-left: 1%;
+    padding: 1% 0 1% 0;
+}
+
+.box {
+    padding: 0.5% 0 0.5% 0;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+footer {
+    clear: both;
+    float: left;
+}
+
+form fieldset {
+    border: none;
+}
+
+/******* Scripts upload section *******/
+script-upload .result-box {
+
+}
+
+/******* Script execution section *******/
+scripts .message-success {
+    color: green;
+}

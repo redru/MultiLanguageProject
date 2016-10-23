@@ -3,6 +3,9 @@
  */
 (() => {
     "use strict";
+    const fs                        = require('fs');
+
+    const Mongo                     = require('./core/dao/Mongo');
     const HttpApplicationServer     = require('./core/server/HttpApplicationServer');
     const LogInterceptor            = require('./core/interceptors/LogInterceptor');
     const TransactionInterceptor    = require('./core/interceptors/TransactionInterceptor');
@@ -13,9 +16,15 @@
         global.pythonScripts = __dirname + '/scripts/python';
     })();
 
-    Python.configure(global.pythonScripts);
-
     let server = new HttpApplicationServer();
+
+    Mongo.init('mongodb://localhost:27017/mlst')
+
+        .then(() => {
+            Python.configure(global.pythonScripts);
+            server.start(context => console.log('[SERVER] %s running at http://%s:%s', context.serverName, context.bind, context.port));
+        });
+
     server.configure(8080, 'localhost', 'MLS01');
 
     server.static('/', './app');
@@ -24,6 +33,5 @@
     server.use(LogInterceptor);
     server.use(TransactionInterceptor);
     server.addRouter('/api/python', require('./core/routes/PythonRoute'));
-
-    server.start(context => console.log('%s running at http://%s:%s', context.serverName, context.bind, context.port));
+    server.addRouter('/api/upload', require('./core/routes/UploadRoute'));
 })();

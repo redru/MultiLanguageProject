@@ -1,19 +1,23 @@
-<div>
-    <div>
-        <form>
-
+<div class="view-container">
+    <div class="box left">
+        <form data-ng-submit="$ctrl.onScriptUpload()">
+            <fieldset>
+                <label> Name </label><input type="text" placeholder="example.py" data-ng-model="$ctrl.model.script.upload.name" data-ng-required="true">
+                <label> Path </label><input type="text" placeholder="test.luca" data-ng-model="$ctrl.model.script.upload.path" data-ng-required="true">
+                <label> Tipo </label>
+                <select data-ng-model="$ctrl.model.script.upload.type" data-ng-required="true">
+                    <option value="">-- selezionare --</option>
+                    <option value="python27">Python v2.7</option>
+                    <option value="python35">Python v3.5</option>
+                </select>
+            </fieldset>
+            <fieldset>
+                <textarea cols="100" rows="40" data-ng-model="$ctrl.model.script.upload.src" data-ng-required="true"></textarea>
+            </fieldset>
+            <fieldset>
+                <button type="submit">Upload</button>
+                <button type="reset">Clear</button>
+            </fieldset>
         </form>
-
-        <button data-ng-click="$ctrl.onUploadScript()">Carica</button>
-    </div>
-
-    <div>
-        Result: {{$ctrl.model.scriptResponse.process.data}}<br>
-        Transaction ID: {{$ctrl.model.scriptResponse.transaction.trackId}}<br>
-        Time elapsed: {{$ctrl.model.scriptResponse.process.deltaTime}} ms<br>
-    </div>
-
-    <div>
-        <span> {{$ctrl.model.scriptResponse.message}}</span>
     </div>
 </div>
