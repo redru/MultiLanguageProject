@@ -20,9 +20,28 @@
                 selected: ''
             }
         };
+
         this.view = {
             scriptResponse: {}
-        }
+        };
+
+        this.init();
+    };
+
+    ScriptsController.prototype.init = function() {
+        var self = this;
+
+        if (this.model.script.selected === '')
+            return;
+
+        this.$http.get('/api/python?path=' + this.model.script.selected).then(
+            function success(response) {
+                self.view.scriptResponse = response.data;
+            },
+
+            function error() {
+                console.error('Error');
+            });
     };
 
     ScriptsController.prototype.onScriptExecute = function() {

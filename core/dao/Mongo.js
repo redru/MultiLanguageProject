@@ -22,6 +22,15 @@
         });
     };
 
+    Mongo.prototype.getScriptsList = function() {
+        return this.db.collection('scripts').find({}).then((scripts) => {
+            // console.log('[MONGO] Inserted new script %s (%s)', script.name, script.type);
+            return Promise.resolve(scripts);
+        }).catch((reason) => {
+            return Promise.reject(reason);
+        });
+    };
+
     Mongo.prototype.saveScript = function(script) {
         script.src = new Buffer(script.src).toString('base64');
         script.createdOn = Date.now();
