@@ -32,6 +32,5 @@
 
     server.use(LogInterceptor);
     server.use(TransactionInterceptor);
-    server.addRouter('/api/python', require('./core/routes/PythonRoute'));
-    server.addRouter('/api/upload', require('./core/routes/UploadRoute'));
+    server.addRouter('/api/script', require('./core/routes/ScriptRoute'));
 })();

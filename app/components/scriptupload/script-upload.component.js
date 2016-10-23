@@ -29,7 +29,7 @@
     ScriptUploadController.prototype.onScriptUpload = function() {
         var self = this;
 
-        this.$http.post('/api/upload', { data: this.model.script.upload }).then(
+        this.$http.post('/api/script/upload', { data: this.model.script.upload }).then(
             function success(response) {
                 self.view.scriptResponse = response.data;
             },

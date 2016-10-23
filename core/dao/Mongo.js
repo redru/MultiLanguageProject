@@ -3,11 +3,13 @@
  */
 (() => {
     "use strict";
+    const mongodb       = require('mongodb');
     const MongoClient   = require('mongodb').MongoClient;
     const assert        = require('assert');
 
     let Mongo = function() {
         this.db = null;
+        this.collections = null;
     };
 
     Mongo.prototype.init = function(url) {
@@ -17,17 +19,30 @@
                 console.log('[MONGO] Successfully connected to %s', url);
 
                 this.db = db;
+                this.collections = {
+                    scripts: this.db.collection('scripts')
+                };
+
                 return resolve();
             });
         });
     };
 
     Mongo.prototype.getScriptsList = function() {
-        return this.db.collection('scripts').find({}).then((scripts) => {
-            // console.log('[MONGO] Inserted new script %s (%s)', script.name, script.type);
-            return Promise.resolve(scripts);
+        return new Promise((resolve, reject) => {
+            this.collections.scripts.find({}).toArray(function(err, docs) {
+                return err ? reject(err) : resolve(docs);
+            });
         }).catch((reason) => {
             return Promise.reject(reason);
+        });
+    };
+
+    Mongo.prototype.getScript = function(id) {
+        return new Promise((resolve, reject) => {
+            this.collections.scripts.find({ _id: mongodb.ObjectID(id) }).next((err, doc) => {
+                return err ? reject(err) : resolve(doc);
+            });
         });
     };
 
@@ -35,7 +50,7 @@
         script.src = new Buffer(script.src).toString('base64');
         script.createdOn = Date.now();
 
-        return this.db.collection('scripts').insertOne(script).then((data) => {
+        return this.collections.scripts.insertOne(script).then((data) => {
             console.log('[MONGO] Inserted new script %s (%s)', script.name, script.type);
             return Promise.resolve(script);
         }).catch((reason) => {

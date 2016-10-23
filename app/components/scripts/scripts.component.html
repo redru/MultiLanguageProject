@@ -1,23 +1,22 @@
 <div class="view-container">
     <div class="box left">
         <div>
-            <select data-ng-model="$ctrl.model.script.selected">
+            <select data-ng-model="$ctrl.model.script.selected" data-ng-options="script as script.name for script in $ctrl.view.scriptsList">
                 <option value="">-- selezionare --</option>
-                <option value="time.py">time.py</option>
             </select>
             <button data-ng-click="$ctrl.onScriptExecute()">Esegui</button>
         </div>
         <div>
-            Result: <span>{{$ctrl.view.scriptResponse.process.result}}</span>
+            Result: <span>{{$ctrl.view.processResponse.process.result}}</span>
         </div>
         <div>
-            Transaction ID: <span>{{$ctrl.view.scriptResponse.transaction.trackId}}</span>
+            Transaction ID: <span>{{$ctrl.view.processResponse.transaction.trackId}}</span>
         </div>
         <div>
-            Time elapsed: <span>{{$ctrl.view.scriptResponse.process.deltaTime.toFixed(2)}} ms</span>
+            Time elapsed: <span>{{$ctrl.view.processResponse.process.deltaTime.toFixed(2)}} ms</span>
         </div>
         <div>
-            Status: <span data-ng-class="{ 'message-success': $ctrl.view.scriptResponse.message === 'Complete' }">{{$ctrl.view.scriptResponse.message}}</span>
+            Status: <span data-ng-class="{ 'message-success': $ctrl.view.processResponse.message === 'Complete' }">{{$ctrl.view.processResponse.message}}</span>
         </div>
     </div>
 </div>

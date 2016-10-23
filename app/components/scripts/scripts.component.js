@@ -22,25 +22,28 @@
         };
 
         this.view = {
-            scriptResponse: {}
+            scriptsList: [],
+            processResponse: {}
         };
 
         this.init();
     };
 
     ScriptsController.prototype.init = function() {
+        this.getScriptsList();
+    };
+
+    ScriptsController.prototype.getScriptsList = function() {
         var self = this;
 
-        if (this.model.script.selected === '')
-            return;
+        return this.$http.get('/api/script/find').then(
 
-        this.$http.get('/api/python?path=' + this.model.script.selected).then(
             function success(response) {
-                self.view.scriptResponse = response.data;
+                self.view.scriptsList = response.data.result;
             },
 
-            function error() {
-                console.error('Error');
+            function error(response) {
+                console.error(response.message);
             });
     };
 
@@ -50,13 +53,14 @@
         if (this.model.script.selected === '')
             return;
 
-        this.$http.get('/api/python?path=' + this.model.script.selected).then(
+        this.$http.post('/api/script/execute/' + this.model.script.selected._id, { data: this.model.script.selected }).then(
+
             function success(response) {
-                self.view.scriptResponse = response.data;
+                self.view.processResponse = response.data;
             },
 
-            function error() {
-                console.error('Error');
+            function error(response) {
+                console.error(response.message);
             });
     };
 
