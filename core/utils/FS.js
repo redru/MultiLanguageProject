@@ -4,13 +4,17 @@
 "use strict";
 (() => {
     const fs        = require('fs');
+    const mkdirp    = require('mkdirp');
 
     function saveScript(path, name, src) {
         path = path.replace(/\./gi, '/');
 
         return new Promise((resolve, reject) => {
-            fs.mkdir(global.pythonScripts + '/' + path, {}, (err) => {
-                return err ? reject(err) :resolve();
+            mkdirp(global.pythonScripts + '/' + path, (err) => {
+                if (err)
+                    return reject(err);
+
+                return err ? reject(err) : resolve();
             });
         }).then(() => {
             fs.writeFile(global.pythonScripts + '/' + path + '/' + name, src, (err) => {
