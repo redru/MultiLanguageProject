@@ -49,11 +49,12 @@
         Mongo.getScript(req.params.id)
 
             .then((doc) => {
-                Python.execute(doc.path + '.' + doc.name, [], (err, processInfo) => {
+                Python.execute(doc.path + '.' + doc.name, [], (err, executionInfo) => {
                     if (err)
                         return res.status(500).json({ message: err });
 
-                    return res.status(200).json({ transaction: req.transaction, process: processInfo, message: 'Complete' });
+                    Mongo.updateScriptMetadata(doc, executionInfo);
+                    return res.status(200).json({ transaction: req.transaction, process: executionInfo, message: 'Complete' });
                 });
 
             })

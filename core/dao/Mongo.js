@@ -48,10 +48,24 @@
 
     Mongo.prototype.saveScript = function(script) {
         script.src = new Buffer(script.src).toString('base64');
-        script.createdOn = Date.now();
+        script.createdOn = new Date();
 
         return this.collections.scripts.insertOne(script).then((data) => {
             console.log('[MONGO] Inserted new script %s (%s)', script.name, script.type);
+            return Promise.resolve(script);
+        }).catch((reason) => {
+            return Promise.reject(reason);
+        });
+    };
+
+    Mongo.prototype.updateScriptMetadata = function(doc, processInfo) {
+        let metaData = {
+            $set: { lastExecuted: new Date(), averageExecutionTime: (doc.averageExecutionTime + processInfo.deltaTime) / (doc.timesExecuted + 1) },
+            $inc: { timesExecuted: 1 }
+        }
+
+        return this.collections.scripts.update({ _id: doc._id }, metaData).then((data) => {
+            console.log('[MONGO] Updated script %s metadata', id);
             return Promise.resolve(script);
         }).catch((reason) => {
             return Promise.reject(reason);
