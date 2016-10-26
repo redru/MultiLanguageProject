@@ -61,8 +61,14 @@
     };
 
     Mongo.prototype.updateScriptMetadata = function(doc, processInfo) {
+        if (doc.executionTimes + 1 >= 100) {
+            doc.executionTimes.shift();
+        }
+
+        doc.executionTimes.push(doc.averageExecutionTime);
+
         let metaData = {
-            $set: { lastExecuted: new Date(), averageExecutionTime: (doc.averageExecutionTime + processInfo.deltaTime) / (doc.timesExecuted + 1) },
+            $set: { lastExecuted: new Date(), averageExecutionTime: doc.executionTimes },
             $inc: { timesExecuted: 1 }
         }
 
