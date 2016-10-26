@@ -49,6 +49,8 @@
     Mongo.prototype.saveScript = function(script) {
         script.src = new Buffer(script.src).toString('base64');
         script.createdOn = new Date();
+        script.averageExecutionTime = 0;
+        script.timesExecuted = 0;
 
         return this.collections.scripts.insertOne(script).then((data) => {
             console.log('[MONGO] Inserted new script %s (%s)', script.name, script.type);
